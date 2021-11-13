@@ -7,7 +7,7 @@ import utils.FilterValues
 Created by Mohammad Zaki
 on Nov,13 2021
  **/
-data class Generation(
+data class MetaData(
     var length: Int = DEFAULT_PASSWORD_LENGTH,
     var upperCase: Boolean = false,
     var lowerCase: Boolean = false,

@@ -11,8 +11,6 @@ class PasswordGeneratorTest {
         PasswordGenerator.Builder(PasswordType.RANDOM)
             .isTestCase(true)
             .includeUpperCaseChars(true)
-            .includeSpecialSymbols(true)
-            .includeLowerCaseChars(true)
             .includeNumbers(true)
             .callback(object : Callback {
                 override fun onPasswordGenerated(response: Response) {

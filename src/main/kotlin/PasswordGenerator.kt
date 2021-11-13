@@ -1,4 +1,4 @@
-import data.entity.Generation
+import data.entity.MetaData
 import data.response.Callback
 import utils.DEFAULT_PASSWORD_LENGTH
 import utils.GeneratorHelper
@@ -57,17 +57,18 @@ class PasswordGenerator(private var builder: Builder) {
 
     fun generate() {
         if (builder.isTestCase) println("PASSWORD TYPE -> ${builder.type.name}")
+        val generation = MetaData(
+            builder.length,
+            builder.includeUpperCase,
+            builder.includeLowerCase,
+            builder.includeSpecialSymbols,
+            builder.includeNumbers,
+            builder.isTestCase
+        )
         when (builder.type) {
             PasswordType.RANDOM -> {
                 GeneratorHelper.generateRandomPassword(
-                    Generation(
-                        builder.length,
-                        builder.includeUpperCase,
-                        builder.includeLowerCase,
-                        builder.includeSpecialSymbols,
-                        builder.includeNumbers,
-                        builder.isTestCase
-                    ),
+                    generation,
                     builder.callback
                 )
             }
