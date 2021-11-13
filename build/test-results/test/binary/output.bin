@@ -1,0 +1,19 @@
+PASSWORD TYPE -> RANDOM
+GENERATING RANDOM PASSWORD
+!FILTER CHOSEN : -> [0, 1, 2, 3]
+COUNT : -> 0
+COUNT : -> 1
+COUNT : -> 2
+COUNT : -> 3
+COUNT : -> 4
+COUNT : -> 5
+COUNT : -> 6
+COUNT : -> 7
+GENERATED PASSWORD -> J1SAGhF
+zSTRENGTH CHECK -> J1SAGhF : This password will take com.nulabinc.zxcvbn.AttackTimes$CrackTimesDisplay@6a67eb88 to crack!
+STRENGTH RATING : 2/10
+9VERBAL_FEEDBACK : com.nulabinc.zxcvbn.Feedback@6cf7b77f
+TIME TAKEN : 105400600
+:SEQUENCE : [com.nulabinc.zxcvbn.matchers.Match@31cf1aa9]
+GUESSED NEEDED : 1.0000001E7
+NCRACK IN SECONDS : com.nulabinc.zxcvbn.AttackTimes$CrackTimeSeconds@60333cc4
