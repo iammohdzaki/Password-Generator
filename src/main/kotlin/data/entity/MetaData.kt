@@ -13,7 +13,7 @@ data class MetaData(
     var lowerCase: Boolean = false,
     var specialChars: Boolean = false,
     var numbers: Boolean = false,
-    var isTestCase: Boolean = false
+    var showLogs: Boolean = false
 ) {
     fun getList(): ArrayList<Int> {
         val list = ArrayList<Int>()
@@ -23,4 +23,9 @@ data class MetaData(
         if (numbers) list.add(FilterValues.NUMBERS)
         return list
     }
+
+    fun onlyUpperCase() = upperCase && !lowerCase && !specialChars && !numbers
+    fun onlyLowerCase() = lowerCase && !upperCase && !specialChars && !numbers
+    fun onlySpecialChars() = specialChars && !upperCase && !lowerCase && !numbers
+    fun onlyNumbers() = numbers && !upperCase && !lowerCase && !specialChars
 }

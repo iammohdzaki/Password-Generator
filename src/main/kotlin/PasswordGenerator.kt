@@ -3,67 +3,117 @@ import data.response.Callback
 import utils.DEFAULT_PASSWORD_LENGTH
 import utils.GeneratorHelper
 import utils.PasswordType
+import utils.WordsHelper
 
-class PasswordGenerator(private var builder: Builder) {
+/**
+ * @author Mohammad Zaki
+ * [PasswordGenerator] allows you to generate different type of password and different filters.
+ * @param builder allows you to choose appropriate options and filters.
+ */
+open class PasswordGenerator(private var builder: Builder) {
 
+    /**
+     * Returns Instance of [PasswordGenerator]
+     * @param type as [PasswordType],which determine which type of password you want to generate.
+     */
     class Builder(var type: PasswordType) {
-        var length: Int = DEFAULT_PASSWORD_LENGTH
-        var includeUpperCase = false
-        var includeLowerCase = false
-        var includeSpecialSymbols = false
-        var includeNumbers = false
-        var callback: Callback? = null
-        var isTestCase: Boolean = false
+        internal var length: Int = DEFAULT_PASSWORD_LENGTH
+        internal var includeUpperCase = false
+        internal var includeLowerCase = false
+        internal var includeSpecialSymbols = false
+        internal var includeNumbers = false
+        internal var callback: Callback? = null
+        internal var showLogs: Boolean = false
 
+        /**
+         * Password Length allows to you set password length
+         * By Default the length is [DEFAULT_PASSWORD_LENGTH]
+         * @param length
+         */
         fun passwordLength(length: Int): Builder {
             this.length = length
             return this
         }
 
+        /**
+         * Include Upper case Characters in password
+         * @param value
+         * @default false
+         */
         fun includeUpperCaseChars(value: Boolean): Builder {
             includeUpperCase = value
             return this
         }
 
+        /**
+         * Include Lower Case Characters in password
+         * @param value
+         * @default false
+         */
         fun includeLowerCaseChars(value: Boolean): Builder {
             includeLowerCase = value
             return this
         }
 
+        /**
+         * Include Special Characters in password
+         * @param value
+         * @default false
+         */
         fun includeSpecialSymbols(value: Boolean): Builder {
             includeSpecialSymbols = value
             return this
         }
 
+        /**
+         * Include Numbers in password
+         * @param value
+         * @default false
+         */
         fun includeNumbers(value: Boolean): Builder {
             includeNumbers = value
             return this
         }
 
+        /**
+         * Returns [Callback] after password generation with other details
+         * @param callback
+         */
         fun callback(callback: Callback): Builder {
             this.callback = callback
             return this
         }
 
-        fun isTestCase(value: Boolean): Builder {
-            this.isTestCase = value
+        /**
+         * If you want to write test case,Then pass
+         * @param value as true,
+         * it will show some additional logs to show how password is generating
+         */
+        fun showLogs(value: Boolean): Builder {
+            this.showLogs = value
             return this
         }
 
+        /**
+         * @return [PasswordGenerator] instance
+         */
         fun build(): PasswordGenerator {
             return PasswordGenerator(this)
         }
     }
 
+    /**
+     * Generates Password According to the type and filters received.
+     */
     fun generate() {
-        if (builder.isTestCase) println("PASSWORD TYPE -> ${builder.type.name}")
+        if (builder.showLogs) println("PASSWORD TYPE -> ${builder.type.name}")
         val generation = MetaData(
             builder.length,
             builder.includeUpperCase,
             builder.includeLowerCase,
             builder.includeSpecialSymbols,
             builder.includeNumbers,
-            builder.isTestCase
+            builder.showLogs
         )
         when (builder.type) {
             PasswordType.RANDOM -> {
@@ -76,7 +126,9 @@ class PasswordGenerator(private var builder: Builder) {
 
             }
             PasswordType.MEMORABLE -> {
-
+                //Load Word FIle in Memory
+                WordsHelper.loadWords(builder.showLogs)
+                GeneratorHelper.generateMemorablePassword(generation, builder.callback)
             }
         }
     }

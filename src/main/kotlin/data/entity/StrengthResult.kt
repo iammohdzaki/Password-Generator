@@ -7,7 +7,7 @@ on Nov,13 2021
 data class StrengthResult(
     var crackTimeDisplay : String = "",
     var passwordRating : Int = 0,
-    var feedback: Feedback,
+    var feedback: Feedback? = null,
     var guessesNeeded : Int = 0,
     var crackTimeInSec : Int = 0
 )
