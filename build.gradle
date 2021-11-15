@@ -1,18 +1,21 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+    id("maven-publish")
 }
 
 group = 'com.zaki.passgen'
-version = '1.0'
+version = '0.1'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.jetbrains.kotlin:kotlin-test'
-    //This is a java port of zxcvbn, which is a password strength estimator
+    //(zxcvbn) Java,Password Strength Estimator
     implementation 'com.nulab-inc:zxcvbn:1.5.2'
+
+    //Unit Testing
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
     testImplementation "com.google.truth:truth:1.1.3"
 }
 

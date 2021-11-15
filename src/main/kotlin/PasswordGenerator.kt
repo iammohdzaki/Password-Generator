@@ -90,7 +90,7 @@ open class PasswordGenerator(private var builder: Builder) {
          * it will show some additional logs to show how password is generating
          */
         fun showLogs(value: Boolean): Builder {
-            this.showLogs = value
+            showLogs = value
             return this
         }
 
@@ -107,7 +107,7 @@ open class PasswordGenerator(private var builder: Builder) {
      */
     fun generate() {
         if (builder.showLogs) println("PASSWORD TYPE -> ${builder.type.name}")
-        val generation = MetaData(
+        val metaData = MetaData(
             builder.length,
             builder.includeUpperCase,
             builder.includeLowerCase,
@@ -118,7 +118,7 @@ open class PasswordGenerator(private var builder: Builder) {
         when (builder.type) {
             PasswordType.RANDOM -> {
                 GeneratorHelper.generateRandomPassword(
-                    generation,
+                    metaData,
                     builder.callback
                 )
             }
@@ -126,9 +126,9 @@ open class PasswordGenerator(private var builder: Builder) {
 
             }
             PasswordType.MEMORABLE -> {
-                //Load Word FIle in Memory
+                //Load Word File in Memory
                 WordsHelper.loadWords(builder.showLogs)
-                GeneratorHelper.generateMemorablePassword(generation, builder.callback)
+                GeneratorHelper.generateMemorablePassword(metaData, builder.callback)
             }
         }
     }
