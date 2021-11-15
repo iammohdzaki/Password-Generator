@@ -1,6 +1,5 @@
 import com.google.common.truth.Truth.assertThat
 import data.entity.Response
-import data.response.Callback
 import org.junit.Test
 import utils.PasswordType
 import utils.WordsHelper

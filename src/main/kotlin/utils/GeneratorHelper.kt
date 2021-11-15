@@ -1,11 +1,11 @@
 package utils
 
+import Callback
 import com.nulabinc.zxcvbn.Zxcvbn
 import data.entity.Feedback
 import data.entity.MetaData
 import data.entity.Response
 import data.entity.StrengthResult
-import data.response.Callback
 
 /**
 Created by Mohammad Zaki

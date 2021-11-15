@@ -21,7 +21,7 @@ internal object WordsHelper {
                 val value = it.split("\t")
                 wordDict[value[0].toInt()] = value[1]
             }
-            //if (showLogs) println("WORD MAP ----->\n$wordDict   ${wordDict[1]}")
+            if (showLogs) println("WORD MAP ----->\n$wordDict   ${wordDict[1]}")
         }
 
     }

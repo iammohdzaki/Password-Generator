@@ -1,5 +1,5 @@
 import data.entity.MetaData
-import data.response.Callback
+import data.entity.Response
 import utils.DEFAULT_PASSWORD_LENGTH
 import utils.GeneratorHelper
 import utils.PasswordType
@@ -127,9 +127,13 @@ open class PasswordGenerator(private var builder: Builder) {
             }
             PasswordType.MEMORABLE -> {
                 //Load Word File in Memory
-                WordsHelper.loadWords(builder.showLogs)
+                WordsHelper.loadWords(false)
                 GeneratorHelper.generateMemorablePassword(metaData, builder.callback)
             }
         }
     }
+}
+
+interface Callback {
+    fun onPasswordGenerated(response: Response)
 }
