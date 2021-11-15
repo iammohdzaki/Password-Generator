@@ -1,8 +1,10 @@
 package utils
 
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 import java.util.*
-import kotlin.collections.HashMap
+
 
 internal object WordsHelper {
 
@@ -13,11 +15,12 @@ internal object WordsHelper {
      */
     fun loadWords(showLogs: Boolean) {
         if (wordDict.size <= 0) {
-            File("src/main/resources/words.txt").readLines()
-                .forEach {
-                    val value = it.split("\t")
-                    wordDict[value[0].toInt()] = value[1]
-                }
+            val `in` = javaClass.getResourceAsStream("/words.txt")
+            val reader = BufferedReader(InputStreamReader(`in`))
+            reader.lines().forEach {
+                val value = it.split("\t")
+                wordDict[value[0].toInt()] = value[1]
+            }
             //if (showLogs) println("WORD MAP ----->\n$wordDict   ${wordDict[1]}")
         }
 
