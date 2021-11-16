@@ -65,11 +65,27 @@ Create a Builder :
             .generate()
 ```
 
+Strength Result :
+```
+crackTimeDisplay : 9 years
+passwordRating : (0 Weak,1 Fair,2 Good,3 Strong ,4 Very strong) : 4/4
+feedback : [Add another word or two. Uncommon words are better.]
+crackTimeInSecS :  3.0001E8
+
+```
+
 Types of Password Generation : 
 ```
-PasswordType.RANDOM
-PasswordType.MEMORABLE
-PasswordType.DASHED
+PasswordType.RANDOM  // Eg : 1D8dm7j%1hN*&NL@eU/14!XeX
+PasswordType.MEMORABLE // Eg : s#0rtW@v369&=  (shortwave)
+PasswordType.DASHED / /Eg : ?0Ad-J*!U
+```
+
+Additional Feature :
+If you only want to check strength of your password, then use :
+```
+GeneratorHelper.checkPasswordStrength(password, showLogs) // For Test Case
+GeneratorHelper.checkPasswordStrength(password) // For Normal Usel̥
 ```
 
 License
