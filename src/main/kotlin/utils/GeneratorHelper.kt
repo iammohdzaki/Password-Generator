@@ -1,42 +1,43 @@
 package utils
 
-import Callback
+import PasswordGenerator
 import com.nulabinc.zxcvbn.Zxcvbn
 import data.entity.Feedback
 import data.entity.MetaData
 import data.entity.Response
 import data.entity.StrengthResult
 
+
 /**
 Created by Mohammad Zaki
 on Nov,13 2021
  **/
-internal object GeneratorHelper {
+object GeneratorHelper {
 
     /**
      * Generates Random Type Password According to Filters
      * @param metaData contains filters
      * @param callback returns Callback after password generation
      */
-    fun generateRandomPassword(metaData: MetaData, callback: Callback?) {
+    internal fun generateRandomPassword(metaData: MetaData, callback: PasswordGenerator.Callback?) {
         val filter = metaData.getList()
         if (metaData.showLogs) println("GENERATING RANDOM PASSWORD")
         var password = ""
         if (filter.size > 0) {
             for (c in 0 until metaData.length) {
-                if(metaData.onlyUpperCase()){
+                if (metaData.onlyUpperCase()) {
                     password += ('A'..'Z').random().toString()
                     continue
                 }
-                if(metaData.onlyLowerCase()){
+                if (metaData.onlyLowerCase()) {
                     password += ('a'..'z').random().toString()
                     continue
                 }
-                if(metaData.onlySpecialChars()){
+                if (metaData.onlySpecialChars()) {
                     password += SPECIAL_SYMBOLS.random().toString()
                     continue
                 }
-                if(metaData.onlyNumbers()){
+                if (metaData.onlyNumbers()) {
                     password += (0..9).random().toString()
                     continue
                 }
@@ -64,7 +65,7 @@ internal object GeneratorHelper {
      * @param metaData contains filters
      * @param callback returns Callback after password generation
      */
-    fun generateMemorablePassword(metaData: MetaData, callback: Callback?) {
+    internal fun generateMemorablePassword(metaData: MetaData, callback: PasswordGenerator.Callback?) {
         if (metaData.showLogs) println("GENERATING MEMORABLE PASSWORD")
         var word = WordsHelper.getRandomWord()
         if (metaData.showLogs) println("Word -> $word")
@@ -136,6 +137,80 @@ internal object GeneratorHelper {
     }
 
     /**
+     * Generates Dashed Type Password According to Filters
+     * Format [xxx-xxx-xxx]
+     * @param metaData contains filters
+     * @param callback returns Callback after password generation
+     */
+    internal fun generateDashedPassword(metaData: MetaData, callback: PasswordGenerator.Callback?) {
+        val filter = metaData.getList()
+        if (metaData.showLogs) println("GENERATING DASHED PASSWORD")
+        //Generate Length
+        val length = DASHED_LENGTHS.random()
+
+        var password = ""
+        if (filter.size > 0) {
+            for (c in 0 until length) {
+                if (metaData.onlyUpperCase()) {
+                    password += ('A'..'Z').random().toString()
+                    continue
+                }
+                if (metaData.onlyLowerCase()) {
+                    password += ('a'..'z').random().toString()
+                    continue
+                }
+                if (metaData.onlySpecialChars()) {
+                    password += SPECIAL_SYMBOLS.random().toString()
+                    continue
+                }
+                if (metaData.onlyNumbers()) {
+                    password += (0..9).random().toString()
+                    continue
+                }
+
+                when (filter.random()) {
+                    FilterValues.UPPER_CASE -> password += ('A'..'Z').random().toString()
+                    FilterValues.LOWER_CASE -> password += ('a'..'z').random().toString()
+                    FilterValues.SPECIAL_SYMBOLS -> password += SPECIAL_SYMBOLS.random().toString()
+                    FilterValues.NUMBERS -> password += (0..9).random().toString()
+                }
+            }
+        }
+        if (metaData.showLogs) println("GENERATED PASSWORD $length-> $password")
+        //Generate Pairs To be Divided
+        val pair = getDashedPairCount(length)
+        if (metaData.showLogs) println("Pair : $pair")
+        val step = length / pair
+        val pairs: List<String> = password.chunked(step)
+        if (metaData.showLogs) println("Password Pairs : ${pairs.toString()}")
+
+        var dashedPass = ""
+        for (p in pairs.indices) {
+            dashedPass += pairs[p]
+            if (p < pairs.size - 1) dashedPass += "-"
+        }
+        if (metaData.showLogs) println("Dashed Password : ${dashedPass.toString()}")
+        val strength = checkPasswordStrength(password, metaData.showLogs)
+        callback?.onPasswordGenerated(
+            Response(
+                password = password,
+                strengthResult = strength
+            )
+        )
+    }
+
+    /**
+     * Gives a random pair count according to length
+     */
+    private fun getDashedPairCount(length: Int): Int {
+        val validPairs = arrayListOf<Int>()
+        DASHED_PAIRS.forEach {
+            if (length % it == 0) validPairs.add(it)
+        }
+        return if (validPairs.isEmpty()) DASHED_PAIRS.first() else validPairs.random()
+    }
+
+    /**
      * Replace Characters by passing a map of chars
      */
     private fun replaceChars(word: String, values: HashMap<Char, Char>): String {
@@ -154,23 +229,19 @@ internal object GeneratorHelper {
      * @param showLogs show logs
      * @return [StrengthResult]
      */
-    private fun checkPasswordStrength(password: String, showLogs: Boolean): StrengthResult {
+    fun checkPasswordStrength(password: String): StrengthResult = checkPasswordStrength(password, false)
+    fun checkPasswordStrength(password: String, showLogs: Boolean): StrengthResult {
         if (password.isEmpty()) {
             return StrengthResult()
         }
         val strength = Zxcvbn().measure(password)
         if (showLogs) {
-            println("STRENGTH CHECK -> ")
-            println("onlineThrottling100perHour : ${strength.crackTimesDisplay.onlineThrottling100perHour}")
-            println("offlineFastHashing1e10PerSecond : ${strength.crackTimesDisplay.offlineFastHashing1e10PerSecond}")
-            println("onlineNoThrottling10perSecond : ${strength.crackTimesDisplay.onlineNoThrottling10perSecond}")
-            println("offlineSlowHashing1e4perSecond : ${strength.crackTimesDisplay.offlineSlowHashing1e4perSecond}")
-            println("STRENGTH RATING : ${strength.score}/10")
+            println("STRENGTH CHECK -> $password")
+            println("TIME TO CRACK DISPLAY: ${strength.crackTimesDisplay.offlineSlowHashing1e4perSecond}")
+            println("STRENGTH RATING (0 Weak,1 Fair,2 Good,3 Strong ,4 Very strong) : ${strength.score}/4")
             println("VERBAL_FEEDBACK : ${strength.feedback.suggestions}")
-            println("TIME TAKEN : ${strength.calcTime}")
-            println("SEQUENCE : ${strength.sequence}")
             println("GUESSED NEEDED : ${strength.guessesLog10}")
-            println("CRACK IN SECONDS : ${strength.crackTimeSeconds.onlineThrottling100perHour}")
+            println("CRACK IN SECONDS : ${strength.crackTimeSeconds.offlineSlowHashing1e4perSecond}")
         }
         return StrengthResult(
             strength.crackTimesDisplay.offlineSlowHashing1e4perSecond,

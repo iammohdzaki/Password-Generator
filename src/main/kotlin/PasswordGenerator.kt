@@ -123,7 +123,10 @@ open class PasswordGenerator(private var builder: Builder) {
                 )
             }
             PasswordType.DASHED -> {
-
+                GeneratorHelper.generateDashedPassword(
+                    metaData,
+                    builder.callback
+                )
             }
             PasswordType.MEMORABLE -> {
                 //Load Word File in Memory
@@ -132,8 +135,9 @@ open class PasswordGenerator(private var builder: Builder) {
             }
         }
     }
+
+    interface Callback {
+        fun onPasswordGenerated(response: Response)
+    }
 }
 
-interface Callback {
-    fun onPasswordGenerated(response: Response)
-}

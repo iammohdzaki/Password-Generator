@@ -50,3 +50,6 @@ val REPLACEABLE_SPECIAL_CHARS = HashMap<Char, Char>()
         put('h', '#')
         put('i', '!')
     }
+
+val DASHED_LENGTHS = arrayOf(8, 10, 12, 14, 16)
+val DASHED_PAIRS = arrayOf(2, 3, 4)
