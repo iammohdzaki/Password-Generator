@@ -88,6 +88,8 @@ GeneratorHelper.checkPasswordStrength(password, showLogs) // For Test Case
 GeneratorHelper.checkPasswordStrength(password) // For Normal Usel̥
 ```
 
+![Visitor Count](https://profile-counter.glitch.me/{iammohdzaki/Password-Generator}/count.svg) 
+
 License
 ```
 The MIT License (MIT)
