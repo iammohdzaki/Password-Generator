@@ -52,6 +52,7 @@ Create a Builder :
             .includeLowerCaseChars(true) // Include Lower Case in password
             .includeSpecialSymbols(true) // Include Special Symbols in password
             .passwordLength(12) // Length of the password (ONLY WORKS IN RANDOM TYPE)
+	    .customPassword("")//If you want to create custom password from your string (ONLY WORKS WITH PASSWORD TYPE :CUSTOM)
             .callback(object : PasswordGenerator.Callback {
                 override fun onPasswordGenerated(response: Response) {
           
@@ -76,9 +77,11 @@ crackTimeInSecS :  3.0001E8
 
 Types of Password Generation : 
 ```
+(THESE EXAMPLES ARE GENERATED WITH ALL FILTERS ENABLED)
 PasswordType.RANDOM  // Eg : 1D8dm7j%1hN*&NL@eU/14!XeX
 PasswordType.MEMORABLE // Eg : s#0rtW@v369&=  (shortwave)
 PasswordType.DASHED / /Eg : ?0Ad-J*!U
+PasswordType.CUSTOM //Eg: Provided String = "MohammadZaki" , Generated Password : " m*#@mm@dz@k!%76"
 ```
 
 Additional Feature :
