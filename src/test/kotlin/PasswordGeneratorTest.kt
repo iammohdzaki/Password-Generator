@@ -60,4 +60,24 @@ class PasswordGeneratorTest {
             .generate()
     }
 
+
+    @Test
+    fun `generate custom password with all filters`() {
+        PasswordGenerator.Builder(PasswordType.CUSTOM)
+            .showLogs(true)
+            .includeLowerCaseChars(true)
+            .includeSpecialSymbols(true)
+            .includeUpperCaseChars(true)
+            .includeNumbers(true)
+            .customPassword("MohammadZaki")
+            .callback(object : PasswordGenerator.Callback {
+                override fun onPasswordGenerated(response: Response) {
+                    val pass = response.password
+                    assertThat(pass).isNotEmpty()
+                }
+            })
+            .build()
+            .generate()
+    }
+
 }

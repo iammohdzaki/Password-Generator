@@ -24,6 +24,7 @@ open class PasswordGenerator(private var builder: Builder) {
         internal var includeNumbers = false
         internal var callback: Callback? = null
         internal var showLogs: Boolean = false
+        internal var customPassword: String = ""
 
         /**
          * Password Length allows to you set password length
@@ -95,6 +96,15 @@ open class PasswordGenerator(private var builder: Builder) {
         }
 
         /**
+         * If you want to create password from your custom string,Then pass
+         * @param value as String
+         */
+        fun customPassword(value: String): Builder {
+            customPassword = value
+            return this
+        }
+
+        /**
          * @return [PasswordGenerator] instance
          */
         fun build(): PasswordGenerator {
@@ -113,7 +123,8 @@ open class PasswordGenerator(private var builder: Builder) {
             builder.includeLowerCase,
             builder.includeSpecialSymbols,
             builder.includeNumbers,
-            builder.showLogs
+            builder.showLogs,
+            builder.customPassword
         )
         when (builder.type) {
             PasswordType.RANDOM -> {
@@ -132,6 +143,9 @@ open class PasswordGenerator(private var builder: Builder) {
                 //Load Word File in Memory
                 WordsHelper.loadWords(false)
                 GeneratorHelper.generateMemorablePassword(metaData, builder.callback)
+            }
+            PasswordType.CUSTOM -> {
+                GeneratorHelper.generateCustomPassword(metaData, builder.callback)
             }
         }
     }

@@ -19,7 +19,8 @@ const val WORDS_END_KEY = 66666
 enum class PasswordType {
     RANDOM,
     MEMORABLE,
-    DASHED
+    DASHED,
+    CUSTOM
 }
 
 object FilterValues {

@@ -13,7 +13,8 @@ data class MetaData(
     var lowerCase: Boolean = false,
     var specialChars: Boolean = false,
     var numbers: Boolean = false,
-    var showLogs: Boolean = false
+    var showLogs: Boolean = false,
+    var customPassword: String = ""
 ) {
     fun getList(): ArrayList<Int> {
         val list = ArrayList<Int>()

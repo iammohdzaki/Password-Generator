@@ -200,6 +200,80 @@ object GeneratorHelper {
     }
 
     /**
+     * Generates Custom Type Password According to Filters
+     * @param metaData contains filters
+     * @param callback returns Callback after password generation
+     */
+    internal fun generateCustomPassword(metaData: MetaData, callback: PasswordGenerator.Callback?) {
+        if (metaData.showLogs) println("GENERATING CUSTOM PASSWORD FOR : ${metaData.customPassword}")
+        var word = metaData.customPassword
+
+        when {
+            metaData.onlyUpperCase() -> {
+                word = word.uppercase()
+            }
+            metaData.onlyLowerCase() -> {
+                word = word.lowercase()
+            }
+            metaData.onlySpecialChars() -> {
+                word = replaceChars(word, REPLACEABLE_SPECIAL_CHARS)
+            }
+            metaData.onlyNumbers() -> {
+                word = replaceChars(word, REPLACEABLE_NUMBER_CHARS)
+            }
+            else -> {
+                if (metaData.upperCase) {
+                    val times = word.length / (1 until word.length).random()
+                    for (t in 0 until times) {
+                        val ranPos = (word.indices).random()
+                        val w = word[ranPos].uppercase()
+                        word = word.replace(word[ranPos].toString(), w)
+                    }
+                } else {
+                    word = word.lowercase()
+                }
+
+                if (metaData.lowerCase) {
+                    val times = word.length / (1 until word.length).random()
+                    for (t in 0 until times) {
+                        val ranPos = (word.indices).random()
+                        val w = word[ranPos].lowercase()
+                        word = word.replace(word[ranPos].toString(), w)
+                    }
+                } else {
+                    word = word.uppercase()
+                }
+
+                if (metaData.specialChars) {
+                    word = replaceChars(word, REPLACEABLE_SPECIAL_CHARS)
+                    word += SPECIAL_SYMBOLS.random()
+                }
+
+                if (metaData.numbers) {
+                    word = replaceChars(word, REPLACEABLE_NUMBER_CHARS)
+                    val numberLength = (2..3).random()
+                    var gDigits = ""
+                    for (d in 0 until numberLength) {
+                        gDigits += (0..9).random().toString()
+                    }
+                    word += gDigits
+                }
+
+
+            }
+        }
+        if (metaData.showLogs) println("GENERATED PASSWORD -> $word")
+        val strength = checkPasswordStrength(word, metaData.showLogs)
+        callback?.onPasswordGenerated(
+            Response(
+                password = word,
+                strengthResult = strength
+            )
+        )
+    }
+
+
+    /**
      * Gives a random pair count according to length
      */
     private fun getDashedPairCount(length: Int): Int {
