@@ -1,8 +1,9 @@
 
 [![](https://jitpack.io/v/iammohdzaki/Password-Generator.svg)](https://jitpack.io/#iammohdzaki/Password-Generator)
-# Password-Generator
+# Password-Generator & CLI Application
 
 This is Android/Kotlin/Java Library which generates passwords for you and also provide the strength rating of your password using zxcvbn4j library.
+- It also has a cli application.
 
 For Gradle : 
 1. Add the JitPack repository to your build file
@@ -90,6 +91,43 @@ If you only want to check strength of your password, then use :
 GeneratorHelper.checkPasswordStrength(password, showLogs) // For Test Case
 GeneratorHelper.checkPasswordStrength(password) // For Normal Usel̥
 ```
+
+How To Use CLI Application (Check Branch -> master-cli):
+```
+Usage: Password Generator CLI :: 0.1
+Subcommands:
+    include - Include Filters( upper lower digits special )
+
+Options:
+    --version, -version [false] -> Shows Version
+    --passwordType, -type [RANDOM] -> Password Type { Value should be one of [random, memorable, dashed, custom] }
+    --passwordLength, -length [8] -> Set Password Length { Int }
+    --logs, -showLogs [false] -> Logs
+    --custom, -custom [GENERATION] -> Custom Password { String }
+    --help, -h -> Usage info
+```
+
+Example : 
+```
+//Inside bin folder open cmd to execute commands
+> PasswordGenerator -type random -length 12 -showLogs include upper lower
+
+Result :
+PASSWORD TYPE -> RANDOM
+GENERATING RANDOM PASSWORD
+GENERATED PASSWORD -> YFfHhPMvSZTf
+STRENGTH CHECK -> YFfHhPMvSZTf
+TIME TO CRACK DISPLAY: 3 years
+STRENGTH RATING (0 Weak,1 Fair,2 Good,3 Strong ,4 Very strong) : 4/4
+VERBAL_FEEDBACK : []
+GUESSED NEEDED : 12.000000000000433
+CRACK IN SECONDS : 1.000000000001E8
+
+Password Generator CLI (0.1)
+YFfHhPMvSZTf
+Password Generated Successfully!
+```
+
 
 License
 ```
